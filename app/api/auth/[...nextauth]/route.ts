@@ -4,12 +4,6 @@ import GoogleProvider from 'next-auth/providers/google';
 import User from '@models/user';
 import { connectToDB } from '@utils/database';
 
-type Profile = {
-	email: string;
-	name: string;
-	picture: string;
-};
-
 const handler = NextAuth({
 	providers: [
 		GoogleProvider({
@@ -23,7 +17,7 @@ const handler = NextAuth({
 				email: session.user?.email,
 			});
 
-			// session.user!.id = sessionUser._id.toString();
+			session.user!.id = sessionUser._id.toString();
 
 			return session;
 		},
@@ -39,7 +33,7 @@ const handler = NextAuth({
 					await User.create({
 						email: profile?.email,
 						username: profile?.name?.replace(' ', '').toLowerCase(),
-						image: profile?.image,
+						image: profile?.picture,
 					});
 				}
 				return true;
