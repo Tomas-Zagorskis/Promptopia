@@ -12,6 +12,8 @@ const PromptCardList = ({ data, handleTagClick }) => {
 					key={post._id}
 					post={post}
 					handleTagClick={handleTagClick}
+					handleEdit={undefined}
+					handleDelete={undefined}
 				/>
 			))}
 		</div>
@@ -32,13 +34,12 @@ const Feed = () => {
 			const data = await response.json();
 
 			setPosts(data);
-
-			fetchPosts();
 		};
+		fetchPosts();
 	}, []);
 
 	return (
-		<section className='flex'>
+		<section className='feed'>
 			<form className='relative w-full flex-center'>
 				<input
 					type='text'
@@ -50,7 +51,7 @@ const Feed = () => {
 				/>
 			</form>
 
-			<PromptCardList data={[posts]} handleTagClick={() => {}} />
+			<PromptCardList data={posts} handleTagClick={() => {}} />
 		</section>
 	);
 };
