@@ -1,6 +1,21 @@
+import { Key } from 'react';
 import PromptCard from './PromptCard';
 
-const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
+interface ProfileProps {
+	name: string;
+	desc: string;
+	data: any;
+	handleEdit: any;
+	handleDelete: any;
+}
+
+const Profile: React.FC<ProfileProps> = ({
+	name,
+	desc,
+	data,
+	handleEdit,
+	handleDelete,
+}) => {
 	return (
 		<section className='w-full'>
 			<h1 className='head_text text-left'>
@@ -8,7 +23,7 @@ const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
 			</h1>
 			<p className='desc text-left'>{desc}</p>
 			<div className='mt-10 prompt_layout'>
-				{data.map(post => (
+				{data.map((post: { _id: Key | null | undefined }) => (
 					<PromptCard
 						key={post._id}
 						post={post}
