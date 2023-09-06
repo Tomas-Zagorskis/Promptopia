@@ -1,14 +1,25 @@
 'use client';
 
-import Link from 'next/link';
+import { BuiltInProviderType } from 'next-auth/providers';
+import {
+	ClientSafeProvider,
+	LiteralUnion,
+	getProviders,
+	signIn,
+	signOut,
+	useSession,
+} from 'next-auth/react';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const Nav = () => {
 	const { data: session } = useSession();
 
-	const [providers, setProviders] = useState(null);
+	const [providers, setProviders] = useState<Record<
+		LiteralUnion<BuiltInProviderType, string>,
+		ClientSafeProvider
+	> | null>(null);
 	const [toggleDropdown, setToggleDropdown] = useState(false);
 
 	useEffect(() => {
@@ -41,7 +52,10 @@ const Nav = () => {
 						<Link href='/create-prompt' className='black_btn'>
 							Create Post
 						</Link>
-						<button type='button' onClick={signOut} className='outline_btn'>
+						<button
+							type='button'
+							onClick={() => signOut}
+							className='outline_btn'>
 							Sign Out
 						</button>
 

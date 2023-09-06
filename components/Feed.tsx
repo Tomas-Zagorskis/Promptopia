@@ -1,10 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { MouseEventHandler, useEffect, useState } from 'react';
 
+import { Post } from '@/types/types';
 import PromptCard from './PromptCard';
 
-const PromptCardList = ({ data, handleTagClick }) => {
+type PromptCardListType = {
+	data: Post[];
+	handleTagClick: MouseEventHandler;
+};
+
+const PromptCardList = ({ data, handleTagClick }: PromptCardListType) => {
 	return (
 		<div className='mt-16 prompt_layout'>
 			{data.map(post => (
