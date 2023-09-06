@@ -1,9 +1,9 @@
 'use client';
 
-import { Dispatch, MouseEventHandler, SetStateAction, useState } from 'react';
-import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { useRouter, usePathname } from 'next/navigation';
+import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
+import { MouseEventHandler, useState } from 'react';
 
 interface PromptCardProps {
 	post: any;
