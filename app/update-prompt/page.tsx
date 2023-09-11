@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import Form from '../../components/Form';
+import { Post } from '@/types/types';
 
 const EditPrompt = () => {
 	const router = useRouter();
@@ -12,7 +13,7 @@ const EditPrompt = () => {
 	const promptId = searchParams.get('id');
 
 	const [submitting, setSubmitting] = useState(false);
-	const [post, setPost] = useState<{ prompt: string; tag: string }>({
+	const [post, setPost] = useState<Post>({
 		prompt: '',
 		tag: '',
 	});

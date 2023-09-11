@@ -35,4 +35,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## TO DO
 
-[ ] implement search [ ] implement click on tag [ ] implement view other profiles
+- [x] implement search
+- [x] implement click on tag
+- [ ] implement view other profiles

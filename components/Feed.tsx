@@ -1,19 +1,34 @@
 'use client';
 
-import { MouseEventHandler, useEffect, useState } from 'react';
+import {
+	BaseSyntheticEvent,
+	MouseEventHandler,
+	useEffect,
+	useState,
+} from 'react';
 
 import { Post } from '@/types/types';
 import PromptCard from './PromptCard';
 
 type PromptCardListType = {
 	data: Post[];
+	searchValue: string;
 	handleTagClick: MouseEventHandler;
 };
 
-const PromptCardList = ({ data, handleTagClick }: PromptCardListType) => {
+const PromptCardList = ({
+	data,
+	searchValue,
+	handleTagClick,
+}: PromptCardListType) => {
+	const filteredData = data.filter(
+		post =>
+			post.creator?.username.includes(searchValue) ||
+			post.tag.includes(searchValue),
+	);
 	return (
 		<div className='mt-16 prompt_layout'>
-			{data.map(post => (
+			{filteredData.map(post => (
 				<PromptCard
 					key={post._id}
 					post={post}
@@ -28,25 +43,34 @@ const PromptCardList = ({ data, handleTagClick }: PromptCardListType) => {
 
 const Feed = () => {
 	const [searchText, setSearchText] = useState('');
-	const [posts, setPosts] = useState([]);
+	const [posts, setPosts] = useState<Post[]>([]);
 
 	const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchText(e.target.value);
+		const searchValue = e.target.value;
+		setSearchText(searchValue);
 	};
 
 	useEffect(() => {
 		const fetchPosts = async () => {
 			const response = await fetch('/api/prompt');
 			const data = await response.json();
-
 			setPosts(data);
 		};
 		fetchPosts();
 	}, []);
 
+	const handleTagClick = (e: BaseSyntheticEvent) => {
+		const value: string = e.currentTarget.innerText.slice(1);
+		setSearchText(value);
+	};
+
+	const handleSubmit = (e: BaseSyntheticEvent) => {
+		e.preventDefault();
+	};
+
 	return (
 		<section className='feed'>
-			<form className='relative w-full flex-center'>
+			<form className='relative w-full flex-center' onSubmit={handleSubmit}>
 				<input
 					type='text'
 					placeholder='Search for a tag or a username'
@@ -57,7 +81,11 @@ const Feed = () => {
 				/>
 			</form>
 
-			<PromptCardList data={posts} handleTagClick={() => {}} />
+			<PromptCardList
+				data={posts}
+				searchValue={searchText}
+				handleTagClick={handleTagClick}
+			/>
 		</section>
 	);
 };

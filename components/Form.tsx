@@ -1,10 +1,17 @@
+import { Post } from '@/types/types';
 import Link from 'next/link';
-import { Dispatch, FC, FormEvent, SetStateAction } from 'react';
+import {
+	BaseSyntheticEvent,
+	Dispatch,
+	FC,
+	FormEvent,
+	SetStateAction,
+} from 'react';
 
 type FormProps = {
 	type: string;
-	post: { prompt: string; tag: string };
-	setPost: Dispatch<SetStateAction<{ prompt: string; tag: string }>>;
+	post: Post;
+	setPost: Dispatch<SetStateAction<Post>>;
 	submitting: boolean;
 	handleSubmit: (e: FormEvent) => void;
 };
@@ -16,6 +23,14 @@ const Form: FC<FormProps> = ({
 	submitting,
 	handleSubmit,
 }) => {
+	const handleTags = (event: BaseSyntheticEvent) => {
+		let value: string = event.target.value;
+		if (value.startsWith('#')) {
+			value = value.slice(1);
+		}
+		setPost({ ...post, tag: value });
+	};
+
 	return (
 		<section className='w-full max-w-full flex-start flex-col'>
 			<h1 className='head_text text-left'>
@@ -50,7 +65,7 @@ const Form: FC<FormProps> = ({
 					</span>
 					<input
 						value={post.tag}
-						onChange={e => setPost({ ...post, tag: e.target.value })}
+						onChange={handleTags}
 						placeholder='#tag'
 						required
 						className='form_input'
@@ -58,7 +73,7 @@ const Form: FC<FormProps> = ({
 				</label>
 
 				<div className='flex-end mx-3 mb-5 gap-4'>
-					<Link href='/' className='text-gray-500 text-sm'>
+					<Link as='/' href='/' className='text-gray-500 text-sm'>
 						Cancel
 					</Link>
 					<button
