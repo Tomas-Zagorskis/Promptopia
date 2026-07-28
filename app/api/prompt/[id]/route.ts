@@ -3,11 +3,13 @@ import Prompt from '../../../../models/prompt';
 
 export const GET = async (
 	request: Request,
-	{ params }: { params: { id: string } },
+	{ params }: { params: Promise<{ id: string }> },
 ) => {
+	const { id } = await params;
+
 	try {
 		await connectToDB();
-		const prompt = await Prompt.findById(params.id).populate('creator');
+		const prompt = await Prompt.findById(id).populate('creator');
 		if (!prompt) return new Response('Prompt not found', { status: 404 });
 
 		return new Response(JSON.stringify(prompt), { status: 200 });
@@ -18,14 +20,15 @@ export const GET = async (
 
 export const PATCH = async (
 	request: Request,
-	{ params }: { params: { id: string } },
+	{ params }: { params: Promise<{ id: string }> },
 ) => {
+	const { id } = await params;
 	const { prompt, tag } = await request.json();
 
 	try {
 		await connectToDB();
 
-		const existingPrompt = await Prompt.findById(params.id);
+		const existingPrompt = await Prompt.findById(id);
 
 		if (!existingPrompt)
 			return new Response('Prompt not found', { status: 404 });
@@ -43,12 +46,14 @@ export const PATCH = async (
 
 export const DELETE = async (
 	request: Request,
-	{ params }: { params: { id: string } },
+	{ params }: { params: Promise<{ id: string }> },
 ) => {
+	const { id } = await params;
+
 	try {
 		await connectToDB();
 
-		await Prompt.findByIdAndDelete(params.id);
+		await Prompt.findByIdAndDelete(id);
 
 		return new Response('Prompt deleted successfully', { status: 200 });
 	} catch (error) {
