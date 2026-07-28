@@ -28,6 +28,7 @@ const PromptCard: React.FC<PromptCardProps> = ({
 		navigator.clipboard.writeText(post.prompt);
 		setTimeout(() => setCopied(''), 3000);
 	};
+
 	return (
 		<div className='prompt_card'>
 			<div className='flex justify-between items-start gap-5'>

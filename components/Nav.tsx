@@ -1,6 +1,6 @@
 'use client';
 
-import { BuiltInProviderType } from 'next-auth/providers';
+import { BuiltInProviderType } from 'next-auth/providers/index';
 import {
 	ClientSafeProvider,
 	LiteralUnion,
